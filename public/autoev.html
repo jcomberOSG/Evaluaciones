@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Autoevaluación</title>
+	<meta charset="UTF-8">
+	
+	<script type="text/javascript" language="javascript">
+        function OpenWindow2() {
+                window.open('llegada.html');
+        }
+	</script>
+	
+</head>
+<body>
+
+<form onsubmit="OpenWindow2()" id="empleado" action="javascript:OpenWindow2()" method="post">
+  <input type="number" name="gestion_personas" value="gestion_personas" min="0" max="100" step="5"> Gestión personas<br>
+  <input type="number" name="pyr" value="pyr"min="0" max="100" step="5"> Proactividad y Responsabilidad <br>
+  <input type="number" name="fcyt" value="fcyt"min="0" max="100" step="5"> Flexibilidad, Creatividad y Trabajo en Equipo <br>
+  <input type="number" name="com" value="com"min="0" max="100" step="5"> Comunicación<br>
+  <input type="number" name="serv" value="serv"min="0" max="100" step="5"> Servicio al Cliente <br>
+  
+  <button type="submit" value="Submit"> Submit </button>
+  
+</form>
+
+</body>
+</html>

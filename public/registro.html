@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registro</title>
+	
+		<script type="text/javascript" language="javascript">
+				function Register() {
+					var choice = document.getElementById("registro");
+					var email = choice.email.value;
+					var password = choice.contraseña.value;
+						firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+				  // Handle Errors here.
+				  var errorCode = error.code;
+				  var errorMessage = error.message;
+				  // ...
+				});
+			}
+		</script>
+		
+		
+</head>
+<body>
+
+<form onsubmit="Register" id="registro"  method="post">
+	<input type="email" name="correo" placeholder="correo@seguros.orion.cl"> Correo <br>
+	<input type="password" name="contraseña"> Contraseña <br>
+	<button type="submit" value="Submit"> Registrarse</button>
+</form>
+
+</body>
+</html>
