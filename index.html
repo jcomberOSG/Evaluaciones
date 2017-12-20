@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Evaluaciones</title>
+	
+	<script type="text/javascript" language="javascript">
+        function OpenWindow() {
+        		var choice = document.getElementById("page1");
+    			choice = choice.cargo.value;
+            if (choice == "jefe") {
+                window.open('eval_empl.html');
+            }
+            else {
+                window.open('autoev.html');
+            }
+        }
+	</script>
+
+</head>
+<body>
+
+<form onsubmit="OpenWindow()" id="page1" action="javascript:OpenWindow()" method="post">
+	<input type="radio" name="cargo" value="jefe">Jefe<br>
+  	<input type="radio" name="cargo" value="empleado">Empleado<br>
+
+<button type="submit" value="Submit"> Submit </button>
+
+</form>
+
+</body>
+</html>
