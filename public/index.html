@@ -28,8 +28,9 @@
 				  // Handle Errors here.
 				  var errorCode = error.code;
 				  var errorMessage = error.message;
-				  // ...
-				});
+				  alert("Error: " + errorMessage);
+				  });
+				alert("Usuario creado con éxito");
 			}
 		</script>
 		
@@ -61,8 +62,8 @@
 		<script>
 				function SignIn() {
 					console.log("Dentro de SignIn");
-					var choice = document.getElementById("registro");
-					var email = choice.correo.value.trim();
+					var choice = document.getElementById("signin");
+					var email = choice.correo.value;
 					var password = choice.contraseña.value;
 					if (user) {
 						firebase.auth().signOut();
