@@ -41,22 +41,93 @@
 		}
 	</script>
 	
+		<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	
+	<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+
+	<!-- Leave out Storage -->
+	<!-- <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script> -->
+	
+
+	<script>
+	  // Initialize Firebase
+	  var config = {
+	    apiKey: "AIzaSyBM1wW2a1Ot1zsHkBSv7-dh2y20UZ_dFKI",
+	    authDomain: "evaluacion-personal.firebaseapp.com",
+	    databaseURL: "https://evaluacion-personal.firebaseio.com",
+	    projectId: "evaluacion-personal",
+	    storageBucket: "evaluacion-personal.appspot.com",
+	    messagingSenderId: "67231726295"
+	  };
+	  firebase.initializeApp(config);
+	  
+	   var database = firebase.database();
+	</script>	
+	
+	<script>
+		function writeNewEval() {
+			  var user = firebase.auth().currentUser;
+			  console.log(user);
+			  var correo = user.email;
+			  var usuario = correo.split("@")[0];
+			  var nombre_empleado= $("#nombre_empleado").val();
+			  var gestion_personas= $("#gestion_personas").val();
+			  var pyr = $("#pyr").val();
+			  var fcyt = $("#fcyt").val();
+			  var fcyt = $("#fcyt").val();
+			  var com = $("#com").val();
+			  var serv = $("#serv").val();
+			   var total = (0.15 * parseInt($("#gestion_personas").val())) + (0.3 * parseInt($("#pyr").val())) + (0.3 * parseInt($("#fcyt").val())) + (0.15 * parseInt($("#com").val())) + (0.1 * parseInt($("#serv").val()));
+			  var evalData = {
+			    gestion_personas: gestion_personas,
+			    pyr: pyr,
+				fcyt: fcyt,
+				com: com,
+			    serv: serv,
+			    fecha: 0,
+				total: total
+			  };
+
+			  var newEvalKey = firebase.database().ref().child('evals').push().key;
+
+			  var updates = {};
+			  updates[nombre_empleado + "/jefe_" + usuario] = evalData;
+
+			  return firebase.database().ref().update(updates);
+			}
+	</script>
+	
+	
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			firebase.auth().onAuthStateChanged(function(user) {
+			 if (user) {
+				console.log(user);
+				var s = document.getElementById('nombre_empleado');
+				if (user.email == "arichaud@segurosorion.cl") {
+					s.options[s.options.length]= new Option('Julia Gómez', 'jgomez');
+					s.options[s.options.length]= new Option('Luis Costabal', 'lcostabal');
+				}
+			  } else {
+			  		console.log("Not signed in");
+			  }
+			});
+			
+		});
+	</script>
 	
 </head>
 <body>
 
-<form  id="empleado" action="javascript:sendMail()" method="post">
-  <!--<input type="text"  id="nombre_empleador" name="nombre_empleador" value="nombre_empleador"> Nombre empleador que evalúa<br>-->
+<form  id="empleado" action="javascript:writeNewEval();window.open('jefe_empleado.html');close()" method="post">
   
-  <select id="nombre_empleador">
-  <option value="Alfredo Richaud">Alfredo Richaud</option>
-  <option value="Mariluz Cartagena">Mariluz Cartagena</option>
-  <option value="Susan De Raadt">Susan De Raadt</option>
-  <option value="Ricardo Marín">Ricardo Marín</option>
-</select>  Nombre empleador <br>
+  <select id="nombre_empleado">
+</select>  Nombre empleado <br>
   
   
-  <input type="text"  id="nombre_empleado" name="nombre_empleado" value="nombre_empleado"> Nombre empleado a evaluar<br>
   <input type="number"  id="gestion_personas" name="gestion_personas" value="gestion_personas" min="1" max="5" step="1"> Gestión personas<br>
   <input type="number" id="pyr" name="pyr" value="pyr" min="1" max="5" step="1"> Proactividad y Responsabilidad <br>
   <input type="number" id="fcyt" name="fcyt" value="fcyt" min="1" max="5" step="1"> Flexibilidad, Creatividad y Trabajo en Equipo <br>
@@ -66,6 +137,8 @@
   <button id="btn-save" type="submit" value="Submit"> Submit </button>
   
 </form>
+
+<a href="jefe_empleado.html">Volver</a>
 
 </body>
 </html>
