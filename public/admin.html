@@ -48,36 +48,31 @@
 		function AddRow(evaluado, auto, total) {
 			$('#evaluaciones').append('<tr><td>' + evaluado + '</td><td>' +  auto + '</td><td>' + total + '</td></tr>');
 		}
+		
 		  // get all the json and iterate over it, calling AddRow
-		  //console.log(database.ref().child('arichaud').key);
 		  var database = firebase.database();
-		  var rootRef = database.ref();
-		  console.log(rootRef);
-		  var personas = ['arichaud', 'jgomez', 'este deberia fallar'];
+		  var personas = ['arichaud', 'jgomez'];
 		  
 		  for (var i=0; i <= personas.length; i++) {
 		  	var persona = personas[i];
-			console.log(database.ref().child(persona).val());
+			var leadsRef = database.ref(persona);
+			leadsRef.on('value', function(snapshot) {
+			    snapshot.forEach(function(childSnapshot) {
+			      var childKey = childSnapshot.key;
+				  console.log(childKey);
+				  var childData = childSnapshot.val();
+				  var auto;
+				  if (childKey.split('jefe').length > 1) {
+				  	auto = false;
+				  } else {
+				  	auto = true;
+				  }
+				  console.log(persona);
+				  AddRow(persona, auto, childData.total);
+			    });
+			});
 		  }
-		  
-		  
-		  
-		  
-		  //var eval = rootRef.orderByKey();
-		  //console.log(eval);
-		  
-		  //eval.once('value', function(snapshot) {
-		  	//console.log(snapshot.key);
-			  //console.log(snapshot.getFirstChild());
-			  //snapshot.forEach(function(childSnapshot) {
-			  	//console.log(childSnapshot.getFirstChild());
-			    //var childKey = childSnapshot.key;
-			    //var childData = childSnapshot.val();
-			   // console.log(childData.gestion_personas);
-				// ...
-			//});
-		//});
-		  
+		
 	 </script>
 	
 	
@@ -88,10 +83,7 @@
 <table id="evaluaciones">
 <tr>
 	<th>Evaluado</th> <th>¿Autoevaluación?</th><th>Total ponderado</th>
-</tr>
-<tr>
-	<td>Placeholder</td> <td>Sí</td><td>2.6</td>
-</tr>
+</tr>|
 </table>
 </body>
 </html>
