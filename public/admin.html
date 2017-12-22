@@ -48,14 +48,12 @@
 		
 		  // get all the json and iterate over it, calling AddRow
 		  var database = firebase.database();
-		  console.log(database);
 		  
 		var leadsRef = database.ref();
 		leadsRef.once('value', function(snapshot) {
 		    snapshot.forEach(function(childSnapshot) {
 		    	childSnapshot.forEach(function(miniSnapshot) {
 		    		  var childKey = miniSnapshot.key;
-					  console.log(childKey);
 					  var childData = miniSnapshot.val();
 					  var auto;
 					  if (childKey.split('jefe').length > 1) {
