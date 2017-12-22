@@ -59,10 +59,11 @@
 		
 			var total = (0.15 * parseInt($("#gestion_personas").val())) + (0.3 * parseInt($("#pyr").val())) + (0.3 * parseInt($("#fcyt").val())) + (0.15 * parseInt($("#com").val())) + (0.1 * parseInt($("#serv").val()));
 		    total = Math.round(total * 100) / 100;
-			var link = "mailto:" + empl_jefe[$("#nombre_empleado").val()] +"@segurosorion.cl"
+			var usuario = firebase.auth().currentUser.email.split("@")[0];
+			var link = "mailto:" + empl_jefe[usuario] +"@segurosorion.cl"
 		             + "?cc=sderaadt@segurosorion.cl"
-		             + "&subject=" + escape("Autoevaluacion de " + $("#nombre_empleado").val()
-		             + "&body=" + escape("Nombre empleador:  " + empl_jefe[$("#nombre_empleado").val()] + "\n" + "Nombre Empleado: " + $("#nombre_empleado").val() + "\n" + "Gestion de Personas: "  + $("#gestion_personas").val() + "\n" + "Proactividad y Responsabilidad: " + $("#pyr").val() + "\n" + "Flexibilidad, Creatividad y Trabajo en Equipo: " + $("#fcyt").val() + "\n" + "Comunicacion: "  + $("#com").val() + "\n" + "Servicio al Cliente: " + $("#serv").val() + "\n" + "Total Ponderado:  " + total.toString() + "\n")
+		             + "&subject=" + escape("Autoevaluacion de " + usuario)
+		             + "&body=" + escape("Nombre empleador:  " + empl_jefe[usuario] + "\n" + "Nombre Empleado: " + usuario + "\n" + "Gestion de Personas: "  + $("#gestion_personas").val() + "\n" + "Proactividad y Responsabilidad: " + $("#pyr").val() + "\n" + "Flexibilidad, Creatividad y Trabajo en Equipo: " + $("#fcyt").val() + "\n" + "Comunicacion: "  + $("#com").val() + "\n" + "Servicio al Cliente: " + $("#serv").val() + "\n" + "Total Ponderado:  " + total.toString() + "\n")
 		    ;
 
 		    window.location.href = link;
@@ -111,7 +112,7 @@
 			  var newEvalKey = firebase.database().ref().child(usuario + '/propia').push().key;
 
 			  var updates = {};
-			  updates[usuario + "/propia_" + usuario] = autoEvData;
+			  updates[yyyy.toString() + "/" + usuario + "/propia_" + usuario] = autoEvData;
 
 			  return firebase.database().ref().update(updates);
 			}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Evaluaciones personal</title>
+	
+		<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+		
+		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+
+		<!-- Leave out Storage -->
+		<!-- <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script> -->
+		
+		<script>
+		  // Initialize Firebase
+		  var config = {
+		    apiKey: "AIzaSyBM1wW2a1Ot1zsHkBSv7-dh2y20UZ_dFKI",
+		    authDomain: "evaluacion-personal.firebaseapp.com",
+		    databaseURL: "https://evaluacion-personal.firebaseio.com",
+		    projectId: "evaluacion-personal",
+		    storageBucket: "evaluacion-personal.appspot.com",
+		    messagingSenderId: "67231726295"
+		  };
+		  firebase.initializeApp(config);
+		  
+		   var database = firebase.database();
+		</script>
+		
+	<script type="text/javascript" language="javascript">
+        function OpenWindow() {
+			var user = firebase.auth().currentUser;
+			console.log(user.email);
+        		var choice = document.getElementById("page1");
+    			choice = choice.cargo.value;
+            if (choice == "jefe") {
+                window.open('eval_empl.html');
+				close();
+				return false;
+            }
+            if (choice == "empleado") {
+                window.open('autoev.html');
+				close();
+				return false;
+            }
+			window.open("admin.html");
+			close();
+        }
+	</script>
+
+
+
+
+
+</head>
+<body>
+
+<form  id="page1" action="javascript:OpenWindow()" method="post">
+	<input type="radio" name="cargo" value="jefe">Evaluar Empleado	<br>
+  	<input type="radio" name="cargo" value="empleado">Autoevaluación<br>
+	<input type="radio" name="cargo" value="admin">Ver evaluaciones entregadas<br>
+
+<button type="submit" value="Submit"> Submit </button>
+
+</form>
+
+</body>
+</html>
