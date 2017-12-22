@@ -46,24 +46,25 @@
 			$('#evaluaciones').append('<tr><td>' + evaluado + '</td><td>' +  auto + '</td><td>' + total + '</td></tr>');
 		}
 		
-		  // get all the json and iterate over it, calling AddRow
-		  var database = firebase.database();
-		  
-		var leadsRef = database.ref();
-		leadsRef.once('value', function(snapshot) {
+		 // get all the json and iterate over it, calling AddRow
+		var database = firebase.database();
+		var evalsRef = database.ref().orderByKey();
+		
+		evalsRef.once('value', function(snapshot) {
 		    snapshot.forEach(function(childSnapshot) {
-		    	childSnapshot.forEach(function(miniSnapshot) {
-		    		  var childKey = miniSnapshot.key;
+				console.log(childSnapshot.key);
+			    	childSnapshot.forEach(function(miniSnapshot) {
+			    		  var childKey = miniSnapshot.key;
 					  var childData = miniSnapshot.val();
-					  var auto;
-					  if (childKey.split('jefe').length > 1) {
-					  	auto = false;
-					  } else {
-					  	auto = true;
-					  }
-					  var persona = childKey.split('_')[1];
-					  AddRow(persona, auto, childData.total);
-		    	});
+						  var auto;
+						  if (childKey.split('jefe').length > 1) {
+						  	auto = false;
+						  } else {
+						  	auto = true;
+						  }
+						  var persona = childKey.split('_')[1];
+						  AddRow(persona, auto, childData.total);
+			    	});
 		      
 		    });
 		});

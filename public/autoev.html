@@ -14,6 +14,18 @@
 		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+		
+		<script>
+			var empl_jefe = {
+					'arichaud': 'sderaadt', 'jgomez': 'arichaud', 'lcostabal': 'arichaud', 'rmarin': 'sderaadt', 'saubel': 'rmarin', 'mcartagena': 'sderaadt', 
+					'fcastillo': 'rmarin', 'acabrera': 'csantos', 'jlagos': 'saubel', 'mtorres': 'rmarin', 'nvasquez': 'mtorres', 'phuaiquilaf': 'saubel', 'csantos': 'saubel', 'fmarti': 'rmarin',
+					'fjofre': 'fcastillo', 'jlefeuvre': 'fcastillo', 'clozano': 'arichaud', 'hvergara': 'jgomez', 'rsaez': 'jgomez', 'mlopez': 'lcostabal', 'gfuentes': 'lcostabal',
+					'cceledon': 'lcostabal', 'jsalazar': 'lcostabal', 'cclaramunt': 'arichaud', 'tnavia': 'cclaramunt', 'psalvo': 'cclaramunt', 'mrjara': 'arichaud', 'dvasquez': 'arichaud', 
+					'eaburto': 'arichaud', 'cdonoso': 'eaburto', 'egalarce': 'arichaud', 'gvergara': 'arichaud', 'cvergara': 'gvergara', 
+					'jrozas': 'mcartagena', 'rseguel': 'jrozas', 'miturra': 'jrozas', 'rnunez': 'rseguel' , 'amizon': 'rseguel', 'rpolanco': 'mcartagena',  
+					'jalvarez': 'rpolanco', 'fgalaz': 'rpolanco', 'dhani': 'rpolanco', 'rvelasquez': 'rpolanco', 'morellana': 'rpolanco', 'rgonzalez': 'mcartagena'
+			};
+		</script>
 
 		<!-- Leave out Storage -->
 		<!-- <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script> -->
@@ -41,6 +53,23 @@
         }
 	</script>
 	
+	<script type="text/javascript" language="javascript">
+	
+		function sendMail() {
+		
+			var total = (0.15 * parseInt($("#gestion_personas").val())) + (0.3 * parseInt($("#pyr").val())) + (0.3 * parseInt($("#fcyt").val())) + (0.15 * parseInt($("#com").val())) + (0.1 * parseInt($("#serv").val()));
+		    total = Math.round(total * 100) / 100;
+			var link = "mailto:" + empl_jefe[$("#nombre_empleado").val()] +"@segurosorion.cl"
+		             + "?cc=sderaadt@segurosorion.cl"
+		             + "&subject=" + escape("Autoevaluacion de " + $("#nombre_empleado").val()
+		             + "&body=" + escape("Nombre empleador:  " + empl_jefe[$("#nombre_empleado").val()] + "\n" + "Nombre Empleado: " + $("#nombre_empleado").val() + "\n" + "Gestion de Personas: "  + $("#gestion_personas").val() + "\n" + "Proactividad y Responsabilidad: " + $("#pyr").val() + "\n" + "Flexibilidad, Creatividad y Trabajo en Equipo: " + $("#fcyt").val() + "\n" + "Comunicacion: "  + $("#com").val() + "\n" + "Servicio al Cliente: " + $("#serv").val() + "\n" + "Total Ponderado:  " + total.toString() + "\n")
+		    ;
+
+		    window.location.href = link;
+		}
+	</script>
+	
+	
 	<script>
 		function writeNewAutoev() {
 			   var user = firebase.auth().currentUser;
@@ -53,13 +82,29 @@
 			  var com = $("#com").val();
 			  var serv = $("#serv").val();
 			   var total = (0.15 * parseInt($("#gestion_personas").val())) + (0.3 * parseInt($("#pyr").val())) + (0.3 * parseInt($("#fcyt").val())) + (0.15 * parseInt($("#com").val())) + (0.1 * parseInt($("#serv").val()));
+			  total = Math.round(total * 100) / 100;
+			  var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth()+1; //January is 0!
+				var yyyy = today.getFullYear();
+
+				if(dd<10) {
+				    dd = '0'+dd
+				} 
+
+				if(mm<10) {
+				    mm = '0'+mm
+				} 
+
+				today = dd + '/' + mm + '/' + yyyy;
+			  
 			  var autoEvData = {
 			    gestion_personas: gestion_personas,
 			    pyr: pyr,
 				fcyt: fcyt,
 				com: com,
 			    serv: serv,
-			    fecha: 0,
+			    fecha: today,
 				total: total
 			  };
 
@@ -76,7 +121,7 @@
 </head>
 <body>
 
-<form id="empleado" action="javascript:writeNewAutoev();alert('Evaluación enviada correctamente')" method="post">
+<form id="empleado" action="javascript:writeNewAutoev();sendMail();window.open('index.html');" method="post">
   <input type="number" id="gestion_personas" name="gestion_personas" value="gestion_personas" min="1" max="5" step="1"> Gestión personas<br>
   <input type="number" id="pyr" name="pyr" value="pyr" min="1" max="5" step="1"> Proactividad y Responsabilidad <br>
   <input type="number" id="fcyt" name="fcyt" value="fcyt" min="1" max="5" step="1"> Flexibilidad, Creatividad y Trabajo en Equipo <br>
