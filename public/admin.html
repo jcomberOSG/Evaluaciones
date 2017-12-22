@@ -9,14 +9,11 @@
 
 	
 		<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
-		
 		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
 
-		<!-- Leave out Storage -->
-		<!-- <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script> -->
 		
 		<script>
 		  // Initialize Firebase
@@ -51,27 +48,27 @@
 		
 		  // get all the json and iterate over it, calling AddRow
 		  var database = firebase.database();
-		  var personas = ['arichaud', 'jgomez'];
+		  console.log(database);
 		  
-		  for (var i=0; i <= personas.length; i++) {
-		  	var persona = personas[i];
-			var leadsRef = database.ref(persona);
-			leadsRef.on('value', function(snapshot) {
-			    snapshot.forEach(function(childSnapshot) {
-			      var childKey = childSnapshot.key;
-				  console.log(childKey);
-				  var childData = childSnapshot.val();
-				  var auto;
-				  if (childKey.split('jefe').length > 1) {
-				  	auto = false;
-				  } else {
-				  	auto = true;
-				  }
-				  console.log(persona);
-				  AddRow(persona, auto, childData.total);
-			    });
-			});
-		  }
+		var leadsRef = database.ref();
+		leadsRef.once('value', function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		    	childSnapshot.forEach(function(miniSnapshot) {
+		    		  var childKey = miniSnapshot.key;
+					  console.log(childKey);
+					  var childData = miniSnapshot.val();
+					  var auto;
+					  if (childKey.split('jefe').length > 1) {
+					  	auto = false;
+					  } else {
+					  	auto = true;
+					  }
+					  var persona = childKey.split('_')[1];
+					  AddRow(persona, auto, childData.total);
+		    	});
+		      
+		    });
+		});
 		
 	 </script>
 	
@@ -79,11 +76,11 @@
 </head>
 <body>
 
-
 <table id="evaluaciones">
 <tr>
 	<th>Evaluado</th> <th>¿Autoevaluación?</th><th>Total ponderado</th>
 </tr>|
 </table>
+
 </body>
 </html>

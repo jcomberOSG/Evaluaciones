@@ -65,6 +65,7 @@
 					var password = choice.contraseña.value;
 					console.log(user);
 					if (user) {
+						console.log("Signing out first");
 						firebase.auth().signOut();
 					}
 					firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
