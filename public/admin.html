@@ -17,11 +17,11 @@
 	<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
 
-	<script>
+	<!-- <script>
 		if (firebase.auth().currentUser.email !== "sderaadt@segurosorion.cl") {
 			close();
 		}
-	</script>
+	</script> -->
 		
 		<script>
 		  // Initialize Firebase
@@ -38,7 +38,7 @@
 	//   var database = firebase.database();
 		</script>
 	
-	<script>
+	<!-- <script>
 		firebase.auth().onAuthStateChanged(function(user) {
 			 if (user) {
 				//console.log(user);
@@ -47,39 +47,76 @@
 				}
 			  } 
 			});
-	</script>
+	</script> -->
 	
 	<script>
-		function AddRow(evaluado, auto, total) {
-			$('#evaluaciones').append('<tr><td>' + evaluado + '</td><td>' +  auto + '</td><td>' + total + '</td></tr>');
+		function Aprobar(evaluado) {
+			var autoEvData = {
+				aprobada: true
+			  };
+
+			  var updates = {};
+			  updates[yyyy.toString() + "/" + evaluado + "/propia_" + evaluado] = autoEvData;
+
+			  return firebase.database().ref().update(updates);
 		}
-		
+
+		function BotonAprobado(evaluado) {
+			return "<button type=submit href='javascript:Aprobar(" + evaluado + ")'>Aprobar</button>"
+		}
+
+		function AddRow(evaluado, auto, total, aprobada) {
+			if (aprobada === false) {
+				$('#evaluaciones').append('<tr><td>' + evaluado + '</td><td>' +  auto + '</td><td>' + total + '</td><td>' + BotonAprobado(evaluado) + '</td></tr>');
+			} else {
+				if (aprobada === true) {
+					$('#evaluaciones').append('<tr><td>' + evaluado + '</td><td>' +  auto + '</td><td>' + total + '</td><td>' + 'true' + '</td></tr>');
+				} else {
+					$('#evaluaciones').append('<tr><td>' + evaluado + '</td><td>' +  auto + '</td><td>' + total + '</td><td>' + '</td></tr>');
+				}
+			}
+		}
+
+		firebase.auth().onAuthStateChanged(function(user) {
 		 // get all the json and iterate over it, calling AddRow
-		var database = firebase.database();
-		
-		var today = new Date();
-		var yyyy = today.getFullYear().toString();
-		
-		var evalsRef = database.ref(yyyy).orderByKey();
-		
-		evalsRef.once('value', function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-				console.log(childSnapshot.key);
-			    	childSnapshot.forEach(function(miniSnapshot) {
-			    		  var childKey = miniSnapshot.key;
-					  var childData = miniSnapshot.val();
-						  var auto;
-						  if (childKey.split('jefe').length > 1) {
-						  	auto = false;
-						  } else {
-						  	auto = true;
-						  }
-						  var persona = childKey.split('_')[1];
-						  AddRow(persona, auto, childData.total);
-			    	});
-		      
-		    });
+			var database = firebase.database();
+			
+			// var user = firebase.auth().currentUser;
+			console.log(user);
+			user = user.email.split("@")[0];
+
+			var today = new Date();
+			var yyyy = today.getFullYear().toString();
+			
+			var evalsRef = database.ref(yyyy).orderByKey();
+			
+			evalsRef.once('value', function(snapshot) {
+			    snapshot.forEach(function(childSnapshot) {
+					console.log(childSnapshot.key);
+				    	childSnapshot.forEach(function(miniSnapshot) {
+				    		  var childKey = miniSnapshot.key;
+						  var childData = miniSnapshot.val();
+							  var auto;
+							  if (childKey.split('jefe').length > 1) {
+							  	auto = false;
+							  } else {
+							  	auto = true;
+							  }
+							  var persona = childKey.split('_')[1];
+							  var aprobada;
+							  if (auto) {
+							  	aprobada = childData.aprobada;
+							  } else {
+							  	aprobada = "no aplica";
+							  }
+							  if (user == "sderaadt" || user == childData.jefe) {
+							  	AddRow(persona, auto, childData.total, aprobada);
+							  }
+				    	});
+			      
+			    });
 		});
+	});
 		
 	 </script>
 	 
@@ -97,7 +134,7 @@
 
 <table id="evaluaciones">
 <tr>
-	<th>Evaluado</th> <th>¿Autoevaluación?</th><th>Total ponderado</th>
+	<th>Evaluado</th> <th>¿Autoevaluación?</th><th>Total ponderado</th><th>¿Aprobada?</th>
 </tr>|
 </table>
 

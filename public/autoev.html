@@ -106,7 +106,9 @@
 				com: com,
 			    serv: serv,
 			    fecha: today,
-				total: total
+				total: total, 
+				jefe: empl_jefe[usuario], 
+				aprobada: false
 			  };
 
 			  var newEvalKey = firebase.database().ref().child(usuario + '/propia').push().key;

@@ -74,12 +74,15 @@
 					var choice = document.getElementById("signin");
 					var email = choice.correo.value;
 					var password = choice.contraseña.value;
-					console.log(user);
-					if (user) {
-						console.log("Signing out first");
-						firebase.auth().signOut();
-					}
-					if (email.split("@")[1] == "segurosorion.cl") {
+					// console.log(user);
+					// if (user) {
+					// 	// console.log("Signing out first");
+					// 	firebase.auth().signOut();
+					// }
+					
+						var choice = document.getElementById("signin");
+						var email = choice.correo.value;
+						var password = choice.contraseña.value;
 						firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
 						    var errorCode = error.code;
 						    var errorMessage = error.message;
@@ -87,35 +90,33 @@
 							alert("Combinación usuario - contraseña inválida");
 						});
 
-						var user = firebase.auth().currentUser;
-						var name, email, uid;
-						console.log(user);
-						if (user != null) {
-							email = user.email;
-							console.log(email);
-							if (email == "sderaadt@segurosorion.cl") {
-								window.open("admin_auto.html");
-								return false;
-							} else {
-								if (email == "arichaud@segurosorion.cl" || email == "rmarin@segurosorion.cl" || email == "mcartagena@segurosorion.cl" || email == "saubel@segurosorion.cl") {
-									window.open("jefe_empleado.html");
+						firebase.auth().onAuthStateChanged(function(user) {
+							// var user = firebase.auth().currentUser;
+							var name, email, uid;
+							console.log(user);
+
+							if (user != null) {
+								email = user.email;
+								// console.log(email);
+								if (email == "sderaadt@segurosorion.cl") {
+									window.open("admin_auto.html");
 									return false;
 								} else {
-									window.open("autoev.html");
-									return false;
+									if (email == "arichaud@segurosorion.cl" || email == "rmarin@segurosorion.cl" || email == "mcartagena@segurosorion.cl" || email == "saubel@segurosorion.cl") {
+										window.open("admin_auto.html");
+										return false;
+									} else {
+										window.open("autoev.html");
+										return false;
+									}
 								}
-							}
-						} else {
-							alert("No estás ingresado");
-							choice.correo.value = "";
-							choice.contraseña.value = "";
-							return false;
-						}	
-						} else {
-							alert("Debes ingresar con cuenta de Orion Seguros Generales");
-							choice.correo.value = "";
-							choice.contraseña.value = "";
-						}
+							} else {
+								alert("No estás ingresado");
+								choice.correo.value = "";
+								choice.contraseña.value = "";
+								return false;
+							}	 
+						});
 					
 				}
 		</script>

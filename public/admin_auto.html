@@ -27,25 +27,32 @@
 		  
 		   var database = firebase.database();
 		</script>
+
+	<!-- <script type="text/javascript">
+		var user = firebase.auth().currentUser;
+		console.log(user);
+	</script> -->
 		
 	<script type="text/javascript" language="javascript">
         function OpenWindow() {
-			var user = firebase.auth().currentUser;
-			console.log(user.email);
-        		var choice = document.getElementById("page1");
-    			choice = choice.cargo.value;
-            if (choice == "jefe") {
-                window.open('eval_empl.html');
-				close();
-				return false;
-            }
-            if (choice == "empleado") {
-                window.open('autoev.html');
-				close();
-				return false;
-            }
-			window.open("admin.html");
-			close();
+        	firebase.auth().onAuthStateChanged(function(user) {
+				// var user = firebase.auth().currentUser;
+				console.log(user.email);
+	        		var choice = document.getElementById("page1");
+	    			choice = choice.cargo.value;
+	            if (choice == "jefe") {
+	                window.open('eval_empl.html');
+					// close();
+					return false;
+	            }
+	            if (choice == "empleado") {
+	                window.open('autoev.html');
+					// close();
+					return false;
+	            }
+				window.open("admin.html");
+				// close();
+			});
         }
 	</script>
 
