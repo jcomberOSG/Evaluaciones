@@ -23,7 +23,8 @@
 					'cceledon': 'lcostabal', 'jsalazar': 'lcostabal', 'cclaramunt': 'arichaud', 'tnavia': 'cclaramunt', 'psalvo': 'cclaramunt', 'mrjara': 'arichaud', 'dvasquez': 'arichaud', 
 					'eaburto': 'arichaud', 'cdonoso': 'eaburto', 'egalarce': 'arichaud', 'gvergara': 'arichaud', 'cvergara': 'gvergara', 
 					'jrozas': 'mcartagena', 'rseguel': 'jrozas', 'miturra': 'jrozas', 'rnunez': 'rseguel' , 'amizon': 'rseguel', 'rpolanco': 'mcartagena',  
-					'jalvarez': 'rpolanco', 'fgalaz': 'rpolanco', 'dhani': 'rpolanco', 'rvelasquez': 'rpolanco', 'morellana': 'rpolanco', 'rgonzalez': 'mcartagena'
+					'jalvarez': 'rpolanco', 'fgalaz': 'rpolanco', 'dhani': 'rpolanco', 'rvelasquez': 'rpolanco', 'morellana': 'rpolanco', 'rgonzalez': 'mcartagena', 
+					'prueba': 'jcomber'
 			};
 		</script>
 
@@ -73,7 +74,7 @@
 	
 	<script>
 		function writeNewAutoev() {
-			   var user = firebase.auth().currentUser;
+			  var user = firebase.auth().currentUser;
 			  console.log(user.email);
 			  var correo = user.email;
 			  var usuario = correo.split("@")[0];
@@ -120,11 +121,25 @@
 			}
 			
 	</script>
+
+	<!-- <script data-main="../functions/index" src="../require.js"></script> -->
+	<!-- <script type="text/javascript" src="../functions/index.js"></script> -->
+	<!-- <script src="../functions/bundle.js"></script> -->
 	
+	<script type="text/javascript">
+		function preParsereMail() {
+			var empleado = firebase.auth().currentUser.email;
+			var usuario = empleado.split("@")[0];
+			var jefe = empl_jefe[usuario];
+			return selfEvalEmail(jefe + "@segurosorion.cl", jefe, empleado);
+
+		}
+	</script>
+
 </head>
 <body>
 
-<form id="empleado" action="javascript:writeNewAutoev();sendMail();window.open('index.html');" method="post">
+<form id="empleado" action="javascript:writeNewAutoev();window.open('index.html');" method="post">
   <input type="number" id="gestion_personas" name="gestion_personas" value="gestion_personas" min="1" max="5" step="1"> Gestión personas<br>
   <input type="number" id="pyr" name="pyr" value="pyr" min="1" max="5" step="1"> Proactividad y Responsabilidad <br>
   <input type="number" id="fcyt" name="fcyt" value="fcyt" min="1" max="5" step="1"> Flexibilidad, Creatividad y Trabajo en Equipo <br>
@@ -135,5 +150,6 @@
   
 </form>
 
+<!-- <script src="main.js"></script> -->
 </body>
 </html>

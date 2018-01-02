@@ -71,6 +71,11 @@
 
 		<script>
 				function SignIn() {
+					firebase.auth().signOut().then(function() {
+					  // Sign-out successful.
+					}, function(error) {
+					  console.log("Error signing out");
+					});
 					var choice = document.getElementById("signin");
 					var email = choice.correo.value;
 					var password = choice.contraseña.value;
@@ -88,6 +93,7 @@
 						    var errorMessage = error.message;
 							console.log("Error: " + errorMessage);
 							alert("Combinación usuario - contraseña inválida");
+							return false;
 						});
 
 						firebase.auth().onAuthStateChanged(function(user) {
@@ -97,7 +103,6 @@
 
 							if (user != null) {
 								email = user.email;
-								// console.log(email);
 								if (email == "sderaadt@segurosorion.cl") {
 									window.open("admin_auto.html");
 									return false;
@@ -111,7 +116,7 @@
 									}
 								}
 							} else {
-								alert("No estás ingresado");
+								// alert("No estás ingresado");
 								choice.correo.value = "";
 								choice.contraseña.value = "";
 								return false;
